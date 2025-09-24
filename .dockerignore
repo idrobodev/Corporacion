@@ -1,0 +1,54 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README*.md
+*.md
+docs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# Backups
+backups/
+
+# SSL certificates (should be mounted as volumes)
+ssl/
+
+# Environment files (will be copied explicitly when needed)
+.env
+.env.local
+.env.development
+.env.test
+
+# Node modules (will be installed in container)
+coptua_react/node_modules/
+coptua_react/build/
+coptua_react/.env
+
+# Maven target (will be built in container)
+api/target/
+api/.mvn/
+
+# Docker files (not needed inside containers)
+docker-compose*.yml
+Dockerfile*
+*.sh
