@@ -9,13 +9,17 @@ COPY coptua_react/package*.json ./
 COPY coptua_react/yarn.lock ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 # Copy source code
 COPY coptua_react/ .
 
 # Copy production environment file
 COPY coptua_react/.env.production .env.production
+
+# Build-time API base URL (overrides .env.production); defaults to /api for local
+ARG REACT_APP_API_BASE_URL=/api
+ENV REACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 
 # Build the application for production
 RUN npm run build
@@ -38,9 +42,8 @@ RUN chown -R nginx:nginx /usr/share/nginx/html && \
     chown -R nginx:nginx /var/log/nginx && \
     chown -R nginx:nginx /etc/nginx/conf.d
 
-# Switch to non-root user
-USER nginx
-
+# Run as root (needed to bind to port 80 and manage /var/run/nginx.pid)
+# USER nginx
 # Expose port
 EXPOSE 80
 

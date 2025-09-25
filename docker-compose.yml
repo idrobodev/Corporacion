@@ -51,6 +51,10 @@ services:
       
       # Profile
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILE:-production}
+      # JPA/Hibernate
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      # Disable Flyway to avoid circular init in container (DB seeded via init-db)
+      SPRING_FLYWAY_ENABLED: "false"
     ports:
       - "8080:8080"
     depends_on:
@@ -70,6 +74,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.react
+      args:
+        REACT_APP_API_BASE_URL: /api
     container_name: todoporunalma-frontend
     restart: unless-stopped
     environment:
