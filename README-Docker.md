@@ -135,6 +135,12 @@ docker-compose ps
 # Access database
 docker-compose exec postgres psql -U todoporunalma_user -d todoporunalma_db
 
+# View database structure
+docker-compose exec postgres psql -U todoporunalma_user -d todoporunalma_db -c "\dt"
+
+# Check users
+docker-compose exec postgres psql -U todoporunalma_user -d todoporunalma_db -c "SELECT email, rol FROM usuarios;"
+
 # Create backup
 ./backup.sh
 
@@ -239,8 +245,16 @@ docker-compose down
 docker-compose up --build -d
 ```
 
-### Database Migrations
-The API automatically runs Flyway migrations on startup. Migration files are located in `api/src/main/resources/db/migration/`.
+### Database Schema
+The database schema is automatically initialized from `database_setup.sql` on first startup. This comprehensive SQL file includes:
+
+- Complete table schema with relationships
+- Optimized indexes for performance
+- Automatic triggers for timestamps
+- Initial data (users, locations, sample records)
+- Security permissions and roles
+
+**Note**: Flyway migrations are disabled in production for direct SQL initialization.
 
 ### Backup Schedule
 Set up automated backups using cron:
@@ -264,17 +278,32 @@ For issues and questions:
 ## 📁 File Structure
 
 ```
-Corporacion/
-├── api/                     # Spring Boot API project
-├── coptua_react/           # React frontend project
-├── docker-compose.yml     # Main orchestration file
-├── Dockerfile.api         # API container definition
-├── Dockerfile.react       # Frontend container definition
-├── nginx.conf             # Nginx configuration for frontend
-├── nginx-proxy.conf       # Production proxy configuration
-├── .env.example           # Environment variables template
-├── .env.production        # Production environment template
-├── deploy.sh              # Deployment script
-├── backup.sh              # Backup script
-└── README-Docker.md       # This file
+corporacion/
+├── 🗄️ database_setup.sql          # Complete database schema (378 lines)
+├── 🐳 docker-compose.yml           # Service orchestration
+├── 🐳 Dockerfile.api               # API container build
+├── 🐳 Dockerfile.react             # Frontend container build
+├── 🌐 nginx.conf                   # Nginx configuration
+├── 🔧 .env.example                 # Environment template
+├── 📋 README.md                    # Main documentation
+├── 📋 README-Docker.md             # Docker deployment guide
+├── 🔧 deploy.sh                    # Deployment script
+├── 🔧 backup.sh                    # Database backup script
+│
+├── 🔧 api/                         # Spring Boot Backend
+│   ├── 📋 README.md                # API documentation
+│   ├── 📦 pom.xml                  # Maven dependencies
+│   └── 📁 src/main/java/org/todoporunalma/api/
+│       ├── 🔐 domain/              # Domain entities & ports
+│       ├── ⚙️ application/         # Use cases & services
+│       └── 🏗️ infrastructure/      # Adapters & config
+│
+└── 🎨 coptua_react/                # React Frontend
+    ├── 📋 README.md                # Frontend guide
+    ├── 📦 package.json             # Node dependencies
+    └── 📁 src/
+        ├── 🏠 pages/               # Main pages
+        ├── 🧩 components/          # Reusable components
+        ├── 🎣 hooks/               # Custom hooks
+        └── 🌐 services/            # API services
 ```

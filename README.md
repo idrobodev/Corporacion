@@ -1,34 +1,105 @@
-# Corporación — Monorepo (API Spring Boot + Frontend React)
+# Corporación Todo por un Alma — Monorepo Completo
 
-Monorepo listo para ejecución con Docker de la API (Spring Boot) y el Frontend (React + Nginx). Incluye orquestación con docker-compose, base de datos PostgreSQL y configuración para desarrollo local y despliegue sencillo.
+**Sistema integral de gestión para fundaciones de rehabilitación y apoyo social**
 
-## Estructura del proyecto
+Monorepo completo con API REST (Spring Boot), Frontend (React), base de datos PostgreSQL y configuración Docker para despliegue production-ready. Incluye gestión de participantes, mensualidades, archivos, sedes y sistema de usuarios con roles.
+
+## 🏗️ Arquitectura del Sistema
+
+### Componentes Principales
 
 ```
-.
-├── docker-compose.yml
-├── docker-compose.dev.yml
-├── Dockerfile.api
-├── Dockerfile.react
-├── nginx.conf
-├── nginx-proxy.conf
-├── .env.example
-├── .env               # (no se versiona)
-├── .env.production    # (no se versiona)
-├── .gitignore
-├── .gitattributes
-├── api/               # API Spring Boot
-│   ├── pom.xml
-│   └── src/
-└── coptua_react/      # Frontend React (Create React App + craco)
-    ├── package.json
-    ├── .env.production
-    └── src/
+🏢 CORPORACIÓN TODO POR UN ALMA
+├── 🔧 API Backend (Spring Boot 3 + Java 17)
+│   ├── Arquitectura Hexagonal (Puertos y Adaptadores)
+│   ├── Autenticación JWT con roles
+│   ├── Gestión de participantes y mensualidades
+│   ├── Sistema de archivos y documentos
+│   └── API REST completa con Swagger
+│
+├── 🎨 Frontend (React + Nginx)
+│   ├── Dashboard administrativo completo
+│   ├── Gestión de archivos con drag & drop
+│   ├── Interfaz responsive con Tailwind CSS
+│   └── Integración completa con API
+│
+└── 🗄️ Base de Datos (PostgreSQL)
+    ├── Esquema optimizado con índices
+    ├── Triggers automáticos
+    ├── Datos iniciales incluidos
+    └── Configuración production-ready
 ```
 
-- API: Spring Boot 3, Java 17, JPA/Hibernate, Security (JWT), Flyway (deshabilitado en Docker por seed externo).
-- Frontend: React (CRA + craco), Nginx como servidor estático y reverse proxy para `/api`.
-- DB: PostgreSQL 15-alpine con inicialización mediante scripts en `./init-db`.
+### Tecnologías Utilizadas
+
+- **Backend**: Spring Boot 3.5.6, Java 17, JPA/Hibernate, Spring Security, JWT
+- **Frontend**: React 18, Create React App, Tailwind CSS, React Dropzone
+- **Base de Datos**: PostgreSQL 15 con optimizaciones de rendimiento
+- **Infraestructura**: Docker, Docker Compose, Nginx, Maven, Node.js
+- **Documentación**: Swagger/OpenAPI, arquitectura hexagonal documentada
+
+## 📊 Funcionalidades del Sistema
+
+### 👥 Gestión de Participantes
+- Registro completo de personas en rehabilitación
+- Vinculación a sedes específicas
+- Seguimiento de estado (Activo/Inactivo)
+- Información personal y de contacto
+
+### 💰 Control de Mensualidades
+- Registro de pagos mensuales
+- Estados: Pendiente, Pagada, Vencida
+- Métodos de pago y observaciones
+- Reportes y estadísticas
+
+### 📁 Sistema de Archivos
+- Subida de archivos con drag & drop (máx. 100MB)
+- Organización por carpetas
+- Metadatos completos (tipo, tamaño, fecha)
+- Asociación con participantes
+
+### 🏢 Administración de Sedes
+- Múltiples centros de rehabilitación
+- Tipos: Masculina, Femenina, Mixta
+- Estados: Activa, Inactiva, Mantenimiento
+- Información de directores y capacidad
+
+### 👤 Sistema de Usuarios
+- Autenticación JWT stateless
+- Roles: Administrador, Consulta
+- Control de permisos granular
+- Gestión de sesiones seguras
+
+## 📁 Estructura del Proyecto
+
+```
+corporacion/
+├── 🗄️ database_setup.sql          # Configuración completa de BD (378 líneas)
+├── 🐳 docker-compose.yml           # Orquestación de servicios
+├── 🐳 Dockerfile.api               # Contenedor API
+├── 🐳 Dockerfile.react             # Contenedor Frontend
+├── 🌐 nginx.conf                   # Configuración Nginx
+├── 🔧 .env.example                 # Variables de entorno template
+├── 📋 README.md                    # Esta documentación
+├── 📋 README-Docker.md             # Guía Docker detallada
+│
+├── 🔧 api/                         # Backend Spring Boot
+│   ├── 📋 README.md                # Documentación API completa
+│   ├── 📦 pom.xml                  # Dependencias Maven
+│   └── 📁 src/main/java/org/todoporunalma/api/
+│       ├── 🔐 domain/              # Núcleo del dominio
+│       ├── ⚙️ application/         # Casos de uso
+│       └── 🏗️ infrastructure/      # Adaptadores y configuración
+│
+└── 🎨 coptua_react/                # Frontend React
+    ├── 📋 README.md                # Guía desarrollo local
+    ├── 📦 package.json             # Dependencias Node.js
+    └── 📁 src/
+        ├── 🏠 pages/               # Páginas principales
+        ├── 🧩 components/          # Componentes reutilizables
+        ├── 🎣 hooks/               # Hooks personalizados
+        └── 🌐 services/            # Servicios API
+```
 
 ## Requisitos
 
@@ -37,37 +108,72 @@ Monorepo listo para ejecución con Docker de la API (Spring Boot) y el Frontend 
   - Java 17 (Temurin)
   - Node 22.x y npm 10+
 
-## Variables de entorno
+## 🔐 Credenciales de Acceso
 
-Archivo `.env` (raíz) basado en `.env.example`:
+### Usuarios por Defecto
 
+El sistema incluye usuarios pre-configurados para acceso inmediato:
+
+| Usuario | Email | Contraseña | Rol | Permisos |
+|---------|-------|------------|-----|----------|
+| **Administrador** | `admin@todoporunalma.org` | `password` | ADMINISTRADOR | ✅ Lectura + Escritura + Gestión |
+| **Consulta** | `consulta@todoporunalma.org` | `password` | CONSULTA | ✅ Solo Lectura |
+
+### 🚀 Inicio Rápido con Docker
+
+```bash
+# 1. Clonar y configurar
+git clone <repository-url>
+cd corporacion
+cp .env.example .env
+
+# 2. Ejecutar aplicación completa
+docker compose up -d --build
+
+# 3. Acceder al sistema
+# Frontend: http://localhost
+# API Docs: http://localhost/api/swagger-ui.html
+# Login con: admin@todoporunalma.org / password
 ```
-# Base de datos
+
+## ⚙️ Variables de Entorno
+
+### Archivo `.env` (Producción)
+
+```bash
+# Base de datos PostgreSQL
 POSTGRES_DB=todoporunalma_db
 POSTGRES_USER=todoporunalma_user
-POSTGRES_PASSWORD=todoporunalma_pass
+POSTGRES_PASSWORD=tu_password_seguro_aqui
 
-# JWT
-JWT_SECRET=CAMBIA-ESTO-EN-PRODUCCION
+# JWT - ¡IMPORTANTE: Cambiar en producción!
+JWT_SECRET=tu_clave_jwt_muy_segura_de_al_menos_256_bits
 JWT_EXPIRATION=86400000
 JWT_REFRESH_EXPIRATION=604800000
 
-# CORS
-CORS_ALLOWED_ORIGINS=http://localhost, http://localhost:3000, http://localhost:3001, https://todoporunalma.org
+# CORS - Configurar dominios permitidos
+CORS_ALLOWED_ORIGINS=https://tudominio.com,https://api.tudominio.com
 
-# Perfil Spring Boot
+# Perfil de Spring Boot
 SPRING_PROFILE=production
 ```
 
-Frontend (`coptua_react/.env.production`):
-```
+### Frontend (`.env.production`)
+
+```bash
+# URL base de la API (relativa para proxy Nginx)
 REACT_APP_API_BASE_URL=/api
-REACT_APP_SITE_URL=https://todoporunalma.org
+
+# URL del sitio (para metadatos y SEO)
+REACT_APP_SITE_URL=https://tudominio.com
 ```
 
-Notas:
-- En Docker, el Frontend usa Nginx y proxyea `/api` al contenedor de la API (servicio `api`).
-- No se versionan `.env`, `.env.production` ni carpetas de IDE (ver `.gitignore`). Se mantiene `.env.example`.
+### 📝 Notas de Configuración
+
+- **Seguridad**: Las claves JWT por defecto son solo para desarrollo
+- **Base de datos**: Se inicializa automáticamente desde `database_setup.sql`
+- **Archivos**: Límite de subida: 100MB por archivo
+- **Variables**: Los archivos `.env` no se versionan por seguridad
 
 ## Inicio rápido (Docker)
 
@@ -124,15 +230,37 @@ Para que el Frontend apunte a tu API local:
 - Usar `REACT_APP_API_BASE_URL=http://localhost:8080/api` en entorno local.
 - En producción/contendor, el valor por defecto `/api` funciona vía Nginx.
 
-## Base de datos e inicialización
+## 🗄️ Base de Datos
 
-- Los scripts de inicialización están en `./init-db/` y son ejecutados por el contenedor de Postgres en el primer arranque del volumen.
-- Flyway en la API está deshabilitado para evitar conflictos con la inicialización externa. Si quieres usar Flyway en otro entorno (DB vacía), habilita:
-  - En `api/src/main/resources/application-production.properties`
-    ```
-    spring.flyway.enabled=true
-    ```
-  - Retira `SPRING_FLYWAY_ENABLED=false` del `docker-compose.yml` y asegúrate de no tener datos conflictivos.
+### Inicialización Automática
+
+La base de datos se configura automáticamente al iniciar los contenedores:
+
+- **Archivo principal**: `database_setup.sql` (378 líneas completas)
+- **Contenido incluye**:
+  - ✅ Creación de todas las tablas
+  - ✅ Índices optimizados para rendimiento
+  - ✅ Triggers automáticos para timestamps
+  - ✅ Usuarios administrador y consulta
+  - ✅ Datos de ejemplo (sedes, participantes)
+  - ✅ Permisos y configuración de seguridad
+
+### Características del Esquema
+
+```sql
+-- Arquitectura optimizada con:
+-- • 6 tablas principales con relaciones FK
+-- • Índices estratégicos en campos de búsqueda
+-- • Triggers para auditoría automática
+-- • Constraints de integridad referencial
+-- • Datos iniciales para testing inmediato
+```
+
+### Configuración Flyway
+
+- **Estado**: Deshabilitado en producción
+- **Razón**: Inicialización directa desde SQL para mayor control
+- **Alternativa**: Para desarrollo con Flyway, modificar `application-production.properties`
 
 ## Comandos útiles
 
