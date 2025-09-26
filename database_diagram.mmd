@@ -1,0 +1,98 @@
+erDiagram
+    FUNDACION ||--o{ SEDES : "administra"
+    SEDES ||--o{ PARTICIPANTES : "alberga"
+    PARTICIPANTES ||--o{ MENSUALIDADES : "genera"
+    PARTICIPANTES ||--o{ ARCHIVOS : "tiene"
+    USUARIOS ||--o{ PARTICIPANTES : "gestiona"
+
+    FUNDACION {
+        uuid id PK
+        varchar nombre
+        varchar nit UK
+        text direccion
+        varchar telefono
+        varchar email
+        varchar website
+        text mision
+        text vision
+        text valores
+        text logo_url
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    SEDES {
+        uuid id PK
+        varchar nombre
+        text direccion
+        varchar telefono
+        varchar email
+        varchar ciudad
+        varchar departamento
+        integer capacidad_maxima
+        enum tipo_sede "MASCULINA|FEMENINA|MIXTA"
+        enum estado "ACTIVA|INACTIVA|MANTENIMIENTO"
+        varchar director_nombre
+        varchar director_telefono
+        text observaciones
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    USUARIOS {
+        uuid id PK
+        varchar email UK
+        varchar nombre
+        varchar password_hash
+        enum rol "CONSULTA|ADMINISTRADOR"
+        boolean activo
+        timestamp ultimo_acceso
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    PARTICIPANTES {
+        uuid id PK
+        varchar documento UK
+        varchar nombres
+        varchar apellidos
+        date fecha_nacimiento
+        integer edad
+        varchar telefono
+        varchar email
+        text direccion
+        enum estado "ACTIVO|INACTIVO"
+        uuid sede_id FK
+        date fecha_ingreso
+        text observaciones
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    MENSUALIDADES {
+        uuid id PK
+        uuid participante_id FK
+        integer mes
+        integer anio
+        decimal monto
+        date fecha_vencimiento
+        date fecha_pago
+        enum estado "PENDIENTE|PAGADA|VENCIDA"
+        varchar metodo_pago
+        text observaciones
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ARCHIVOS {
+        uuid id PK
+        varchar nombre
+        varchar ruta
+        varchar url
+        varchar mime_type
+        bigint tamaño
+        varchar carpeta
+        uuid participante_id FK
+        timestamp created_at
+        timestamp updated_at
+    }
