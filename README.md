@@ -80,6 +80,9 @@ corporacion/
 ├── 🐳 Dockerfile.react             # Contenedor Frontend
 ├── 🌐 nginx.conf                   # Configuración Nginx
 ├── 🔧 .env.example                 # Variables de entorno template
+├── 🚀 .dokploy/                    # Configuración Dokploy
+│   ├── ⚙️ config.json              # Dominios y servicios
+│   └── 🔧 env                      # Variables de entorno
 ├── 📋 README.md                    # Esta documentación
 ├── 📋 README-Docker.md             # Guía Docker detallada
 │
@@ -95,10 +98,20 @@ corporacion/
     ├── 📋 README.md                # Guía desarrollo local
     ├── 📦 package.json             # Dependencias Node.js
     └── 📁 src/
-        ├── 🏠 pages/               # Páginas principales
-        ├── 🧩 components/          # Componentes reutilizables
+        ├── 🗂️ assets/              # Recursos estáticos
+        │   └── 🖼️ images/          # Imágenes y assets
+        ├── 🧩 components/          # Componentes organizados
+        │   ├── 🔧 common/          # Componentes compartidos
+        │   ├── 📐 layout/          # Layout y navegación
+        │   ├── 🎨 ui/              # Componentes UI
+        │   └── ⚙️ features/        # Componentes por funcionalidad
         ├── 🎣 hooks/               # Hooks personalizados
-        └── 🌐 services/            # Servicios API
+        ├── 📄 pages/               # Páginas principales
+        ├── 🌐 services/            # Servicios API
+        ├── 📁 utils/               # Utilidades
+        ├── ⚛️ contexts/            # Contextos React
+        ├── ⚙️ App.js               # Componente principal
+        └── 🏠 index.js             # Punto de entrada
 ```
 
 ## Requisitos
@@ -284,8 +297,21 @@ docker compose down -v
 
 ## Despliegue
 
+### Opciones de Despliegue
+
+#### 1. Docker Manual (Local/Producción Básica)
 - La configuración incluida permite ejecución local con Docker.
-- Para producción con dominio/SSL, revisar/elaborar configuración en `nginx-proxy.conf` y montar certificados en `./ssl` (no versionados).
+- Para producción básica, agregar puertos externos en `docker-compose.yml` si es necesario.
+
+#### 2. Docker con Nginx Proxy (Producción Avanzada)
+- Para producción con dominio/SSL, revisar configuración en `nginx-proxy.conf`.
+- Montar certificados en `./ssl` (no versionados).
+- Usar perfil `production` en docker-compose.
+
+#### 3. Dokploy (Recomendado para Producción)
+- Plataforma self-hosted para gestión de Docker Compose.
+- Incluye configuración en `.dokploy/` para dominios, SSL automático y monitoreo.
+- Ver sección "Dokploy Deployment" en `README-Docker.md` para detalles.
 
 ## Salud y documentación
 

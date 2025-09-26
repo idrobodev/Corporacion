@@ -267,6 +267,32 @@ crontab -e
 0 2 * * * /path/to/Corporacion/backup.sh
 ```
 
+## 🚀 Dokploy Deployment
+
+Dokploy is a self-hosted platform for deploying and managing Docker Compose applications with a web-based interface.
+
+### Prerequisites
+- Dokploy installed on your VPS (see [Dokploy installation guide](https://docs.dokploy.com/)).
+- Git repository accessible by Dokploy.
+
+### Configuration
+The project includes a `.dokploy` directory with:
+- `config.json`: Defines domains for frontend (`yourdomain.com`) and API (`api.yourdomain.com`).
+- `env`: Environment variables (edit with your production values before deployment).
+
+### Deployment Steps
+1. **Connect Repository**: In Dokploy, connect your Git repository (e.g., GitHub).
+2. **Create Application**: Create a new application, selecting the root directory.
+3. **Configure Domains**: Dokploy will use the domains from `.dokploy/config.json`. Update with your actual domains.
+4. **Set Environment**: Dokploy loads variables from `.dokploy/env`. Override as needed in the UI.
+5. **Deploy**: Click deploy. Dokploy builds and runs the containers, handles SSL via Let's Encrypt, and provides monitoring.
+
+### Notes
+- Dokploy automatically manages reverse proxy, SSL, and service exposure.
+- For updates, push to Git; Dokploy redeploys automatically.
+- Monitor via Dokploy dashboard: logs, resource usage, health checks.
+- Database backups can be handled via Dokploy's backup features or the provided `backup.sh` script.
+
 ## 🆘 Support
 
 For issues and questions:
@@ -285,6 +311,9 @@ corporacion/
 ├── 🐳 Dockerfile.react             # Frontend container build
 ├── 🌐 nginx.conf                   # Nginx configuration
 ├── 🔧 .env.example                 # Environment template
+├── 🚀 .dokploy/                    # Dokploy configuration
+│   ├── ⚙️ config.json              # Domain and service config
+│   └── 🔧 env                      # Environment variables
 ├── 📋 README.md                    # Main documentation
 ├── 📋 README-Docker.md             # Docker deployment guide
 ├── 🔧 deploy.sh                    # Deployment script

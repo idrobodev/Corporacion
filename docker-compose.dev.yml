@@ -31,7 +31,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.api
-      target: build  # Stop at build stage for development
     container_name: todoporunalma-api-dev
     restart: unless-stopped
     environment:
