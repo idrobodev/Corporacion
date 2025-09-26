@@ -6,16 +6,12 @@ WORKDIR /app
 
 # Copy package files
 COPY coptua_react/package*.json ./
-COPY coptua_react/yarn.lock ./
 
 # Install dependencies
 RUN npm install
 
 # Copy source code
 COPY coptua_react/ .
-
-# Copy production environment file
-COPY coptua_react/.env.production .env.production
 
 # Build-time API base URL (overrides .env.production); defaults to /api for local
 ARG REACT_APP_API_BASE_URL=/api
