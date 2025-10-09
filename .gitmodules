@@ -1,0 +1,12 @@
+[submodule "backend/fastapi_auth"]
+	path = backend/fastapi_auth
+	url = git@github.com:idrobodev/fastapi_auth.git
+[submodule "backend/fastapi_dashboard"]
+	path = backend/fastapi_dashboard
+	url = git@github.com:idrobodev/fastapi_dashboard.git
+[submodule "backend/fastapi_formatos"]
+	path = backend/fastapi_formatos
+	url = git@github.com:idrobodev/fastapi_formatos.git
+[submodule "coptua_react"]
+	path = coptua_react
+	url = git@github.com:idrobodev/coptua_react.git

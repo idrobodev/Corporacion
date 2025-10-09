@@ -1,0 +1,144 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Authentication Service
+  auth-service:
+    build:
+      context: ./backend/fastapi_auth
+      dockerfile: Dockerfile
+    container_name: auth_service
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/auth_db
+      HOST: 0.0.0.0
+      PORT: 8080
+      ALLOWED_ORIGINS: https://todoporunalma.org,https://www.todoporunalma.org,http://localhost:3001,http://localhost:3001
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import requests; requests.get('http://localhost:8080/health')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Dashboard Service
+  dashboard-service:
+    build:
+      context: ./backend/fastapi_dashboard
+      dockerfile: Dockerfile
+    container_name: dashboard_service
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/dashboard_db
+      HOST: 0.0.0.0
+      PORT: 8081
+      ALLOWED_ORIGINS: https://todoporunalma.org,https://www.todoporunalma.org,http://localhost:3001,http://localhost:3001
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import requests; requests.get('http://localhost:8081/api/health')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Formatos Service
+  formatos-service:
+    build:
+      context: ./backend/fastapi_formatos
+      dockerfile: Dockerfile
+    container_name: formatos_service
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/formatos_db
+      HOST: 0.0.0.0
+      PORT: 8082
+      ALLOWED_ORIGINS: https://todoporunalma.org,https://www.todoporunalma.org,http://localhost:3001,http://localhost:3001
+    ports:
+      - "8082:8082"
+    volumes:
+      - formatos_storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import requests; requests.get('http://localhost:8082/api/health')\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./coptua_react
+      dockerfile: Dockerfile
+    container_name: frontend
+    environment:
+      REACT_APP_AUTH_API_BASE_URL: http://auth-service:8080/api
+      REACT_APP_DASHBOARD_API_BASE_URL: http://dashboard-service:8081/api
+      REACT_APP_API_BASE_URL: http://dashboard-service:8081/api
+      REACT_APP_FORMATOS_API_URL: http://formatos-service:8082/api
+      REACT_APP_CORS_ORIGINS: https://todoporunalma.org,https://www.todoporunalma.org
+      REACT_APP_SITE_URL: https://todoporunalma.org
+      NODE_ENV: production
+    ports:
+      - "3001:80"
+    depends_on:
+      auth-service:
+        condition: service_healthy
+      dashboard-service:
+        condition: service_healthy
+      formatos-service:
+        condition: service_healthy
+    networks:
+      - app_network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend.rule=Host(`todoporunalma.org`, `www.todoporunalma.org`)
+      - traefik.http.routers.frontend.entrypoints=websecure
+      - traefik.http.routers.frontend.tls.certresolver=letsencrypt
+      - traefik.http.services.frontend.loadbalancer.server.port=80
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  postgres_data:
+  formatos_storage:
+
+networks:
+  app_network:
+    driver: bridge
