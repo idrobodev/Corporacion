@@ -1,11 +1,3 @@
--- Crear bases de datos
-CREATE DATABASE auth_db;
-CREATE DATABASE dashboard_db;
-CREATE DATABASE formatos_db;
-
--- Conectar a auth_db y crear tablas
-\c auth_db;
-
 -- Tabla de usuarios para autenticación
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -20,9 +12,6 @@ CREATE TABLE users (
 INSERT INTO users (email, password_hash, role) VALUES
 ('admin@example.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LeCt1uB0Y4M5YXIKi', 'ADMINISTRADOR'),
 ('consulta@example.com', '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LeCt1uB0Y4M5YXIKi', 'CONSULTA');
-
--- Conectar a dashboard_db y crear tablas
-\c dashboard_db;
 
 -- Tabla de sedes
 CREATE TABLE sedes (
@@ -147,25 +136,36 @@ INSERT INTO mensualidades (participant_id, id_acudiente, mes, año, monto, estad
 (9, 9, 1, 2024, 135000, 'PAGADO', 'EFECTIVO', '2024-01-30', 'Pago en efectivo'),
 (10, 10, 1, 2024, 165000, 'PAGADO', 'TRANSFERENCIA', '2024-01-31', 'Pago completo');
 
--- Conectar a formatos_db y crear tablas
-\c formatos_db;
-
--- Tabla de archivos (simplificada para el ejemplo)
-CREATE TABLE archivos (
+-- Tabla de archivos
+CREATE TABLE files (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
-    ruta VARCHAR(500) NOT NULL,
-    tipo VARCHAR(100),
-    tamaño INTEGER,
-    carpeta VARCHAR(255) DEFAULT 'Documentos',
+    ruta VARCHAR(1000),
+    tamaño BIGINT NOT NULL,
+    tipo VARCHAR(100) NOT NULL,
+    categoria VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insertar algunos archivos de ejemplo
-INSERT INTO archivos (nombre, ruta, tipo, tamaño, carpeta) VALUES
-('Reglamento_Interno.pdf', '/app/storage/formatos/Documentos/Reglamento_Interno.pdf', 'application/pdf', 2048576, 'Documentos'),
-('Formulario_Inscripcion.docx', '/app/storage/formatos/Documentos/Formulario_Inscripcion.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 1024000, 'Documentos'),
-('Horarios_Actividades.xlsx', '/app/storage/formatos/Documentos/Horarios_Actividades.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 512000, 'Documentos'),
-('Foto_Grupo_2024.jpg', '/app/storage/formatos/Imágenes/Foto_Grupo_2024.jpg', 'image/jpeg', 5242880, 'Imágenes'),
-('Certificado_Asistencia.pdf', '/app/storage/formatos/Documentos/Certificado_Asistencia.pdf', 'application/pdf', 1536000, 'Documentos');
+-- Tabla de carpetas
+CREATE TABLE folders (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    ruta VARCHAR(1000),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insertar carpetas por defecto
+INSERT INTO folders (id, nombre, ruta, created_at) VALUES
+(1, 'Documentos', '', '2024-01-15T10:00:00'),
+(2, 'Imágenes', '', '2024-01-16T11:00:00'),
+(3, 'Reportes', 'Documentos/', '2024-01-17T12:00:00');
+
+-- Insertar archivos de ejemplo
+INSERT INTO files (id, nombre, ruta, tamaño, tipo, categoria, created_at, updated_at) VALUES
+(1, 'manual_usuario.pdf', 'Documentos/', 2048000, 'application/pdf', 'documento', '2024-01-15T10:30:00', '2024-01-15T10:30:00'),
+(2, 'logo.png', 'Imágenes/', 512000, 'image/png', 'imagen', '2024-01-16T11:15:00', '2024-01-16T11:15:00'),
+(3, 'datos.xlsx', 'Documentos/', 1024000, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'documento', '2024-01-17T12:30:00', '2024-01-17T12:30:00'),
+(4, 'reporte_mensual.docx', 'Documentos/Reportes/', 1536000, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'documento', '2024-01-18T13:00:00', '2024-01-18T13:00:00'),
+(5, 'banner.jpg', 'Imágenes/', 768000, 'image/jpeg', 'imagen', '2024-01-19T14:00:00', '2024-01-19T14:00:00');
