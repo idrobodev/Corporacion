@@ -155,7 +155,7 @@ CREATE TABLE archivos (
     id SERIAL PRIMARY KEY,
     nombre VARCHAR(255) NOT NULL,
     ruta VARCHAR(500) NOT NULL,
-    tipo VARCHAR(50),
+    tipo VARCHAR(100),
     tamaño INTEGER,
     carpeta VARCHAR(255) DEFAULT 'Documentos',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

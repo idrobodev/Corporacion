@@ -1,25 +1,4 @@
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15
-    container_name: postgres_db
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres123
-      POSTGRES_DB: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-    networks:
-      - app_network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   # Authentication Service
   auth-service:
     build:
@@ -27,15 +6,12 @@ services:
       dockerfile: Dockerfile
     container_name: auth_service
     environment:
-      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/auth_db
+      DATABASE_URL: postgresql://postgres:Nalufis28++@corporacion-corporaciondb-4z75xa:5432/corporacion_db
       HOST: 0.0.0.0
       PORT: 8080
       ALLOWED_ORIGINS: https://todoporunalma.org,https://www.todoporunalma.org,http://localhost:3001,http://localhost:3001
     ports:
       - "8080:8080"
-    depends_on:
-      postgres:
-        condition: service_healthy
     networks:
       - app_network
     healthcheck:
@@ -52,15 +28,12 @@ services:
       dockerfile: Dockerfile
     container_name: dashboard_service
     environment:
-      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/dashboard_db
+      DATABASE_URL: postgresql://postgres:Nalufis28++@corporacion-corporaciondb-4z75xa:5432/corporacion_db
       HOST: 0.0.0.0
       PORT: 8081
       ALLOWED_ORIGINS: https://todoporunalma.org,https://www.todoporunalma.org,http://localhost:3001,http://localhost:3001
     ports:
       - "8081:8081"
-    depends_on:
-      postgres:
-        condition: service_healthy
     networks:
       - app_network
     healthcheck:
@@ -77,7 +50,7 @@ services:
       dockerfile: Dockerfile
     container_name: formatos_service
     environment:
-      DATABASE_URL: postgresql://postgres:postgres123@postgres:5432/formatos_db
+      DATABASE_URL: postgresql://postgres:Nalufis28++@corporacion-corporaciondb-4z75xa:5432/corporacion_db
       HOST: 0.0.0.0
       PORT: 8082
       ALLOWED_ORIGINS: https://todoporunalma.org,https://www.todoporunalma.org,http://localhost:3001,http://localhost:3001
@@ -85,9 +58,6 @@ services:
       - "8082:8082"
     volumes:
       - formatos_storage:/app/storage
-    depends_on:
-      postgres:
-        condition: service_healthy
     networks:
       - app_network
     healthcheck:
@@ -130,8 +100,7 @@ services:
       start_period: 40s
 
 volumes:
-  postgres_data:
-  formatos_storage:
+   formatos_storage:
 
 networks:
   app_network:
