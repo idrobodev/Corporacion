@@ -7,22 +7,6 @@ import { ActionDropdown } from "components/UI/Table";
 import { ViewDetailsModal, EditFormModal, CreateFormModal } from "components/common/CRUDModals";
 import { useModal } from "shared/hooks";
 
-// Simple Map Component
-const MapPlaceholder = ({ address, className = "" }) => {
-  return (
-    <div className={`bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center relative overflow-hidden ${className}`}>
-      <div className="text-center">
-        <i className="fas fa-map-marked-alt text-green-600 text-3xl mb-2"></i>
-        <p className="text-xs text-gray-600 font-medium">Mapa de Ubicación</p>
-        <p className="text-xs text-gray-500 mt-1 px-2">{address?.substring(0, 30)}...</p>
-      </div>
-      <div className="absolute top-2 right-2">
-        <i className="fas fa-external-link-alt text-gray-400 text-xs"></i>
-      </div>
-    </div>
-  );
-};
-
 const SedesComponent = () => {
   const [sedes, setSedes] = useState([]);
   const [loading, setLoading] = useState(true);
