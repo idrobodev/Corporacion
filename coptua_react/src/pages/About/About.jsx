@@ -454,7 +454,7 @@ const About = () => {
                 <img
                   src={mission}
                   alt="Nuestra Historia"
-                  className="relative w-full max-w-md mx-auto rounded-xl shadow-lg transform group-hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20"
+                  className="relative w-full max-w-md mx-auto rounded-xl shadow-lg transform group-hover:scale-105 transition-all duration-700 hover:shadow-2xl hover:shadow-primary/20 aspect-[2/3] object-cover"
                   data-aos="zoom-in"
                   data-aos-duration="1000"
                   data-aos-delay="300"
