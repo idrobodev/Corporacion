@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
 from database_models import db_service, SedeModel, ParticipanteModel, AcudienteModel, UsuarioModel, MensualidadModel, SessionLocal
 from sqlalchemy.orm import Session
 
@@ -9,10 +10,11 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configuración de CORS
+# Configurar CORS
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3001").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001"],
+    allow_origins=[origin.strip() for origin in allowed_origins],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
