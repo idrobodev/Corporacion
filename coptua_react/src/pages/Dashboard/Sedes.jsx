@@ -196,12 +196,6 @@ const SedesComponent = () => {
                   verModal.openModal();
                 }}
               >
-                {/* Map */}
-                <MapPlaceholder
-                  address={sede.direccion}
-                  className="h-32 rounded-t-xl"
-                />
-
                 {/* Card Content */}
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
