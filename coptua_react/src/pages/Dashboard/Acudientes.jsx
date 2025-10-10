@@ -5,7 +5,7 @@ import { FilterBar } from "components/UI/Filter";
 import { StatsGrid } from "components/UI/Card";
 import { DataTable, ActionDropdown } from "components/UI/Table";
 import { ViewDetailsModal, EditFormModal, CreateFormModal } from "components/common/CRUDModals";
-import { useFilters, useModal, useIsMobile } from "shared/hooks";
+import { useFilters, useModal } from "shared/hooks";
 import { 
   validateAcudienteDocumentoUnico, 
   validateEmail,
@@ -28,8 +28,6 @@ const AcudientesComponent = () => {
   const editarModal = useModal();
   const crearModal = useModal();
 
-  // Mobile detection hook
-  const isMobile = useIsMobile();
 
   // Función para cargar acudientes
   const loadAcudientes = useCallback(async () => {
