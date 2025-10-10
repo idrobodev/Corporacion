@@ -30,43 +30,58 @@ async def register(request: RegisterRequest):
 @router.post("/login")
 async def login(credentials: UserLogin):
     """Iniciar sesión y obtener token de acceso"""
-    user = db.get_user_by_email(credentials.email)
+    print(f"DEBUG: Login attempt for email: {credentials.email}")
+    print(f"DEBUG: Request received at /api/auth/login")
 
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Email o contraseña incorrectos",
-            headers={"WWW-Authenticate": "Bearer"},
+    try:
+        user = db.get_user_by_email(credentials.email)
+        print(f"DEBUG: User found: {user is not None}")
+
+        if not user:
+            print("DEBUG: User not found, raising 401")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Email o contraseña incorrectos",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+        print(f"DEBUG: Verifying password for user {user.email}")
+        if not verify_password(credentials.password, user.password_hash):
+            print("DEBUG: Password verification failed")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Email o contraseña incorrectos",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+        print("DEBUG: Password verified, creating token")
+        # Crear token de acceso
+        access_token = create_access_token(
+            data={"sub": user.email, "role": user.role.value}
         )
 
-    if not verify_password(credentials.password, user.password_hash):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Email o contraseña incorrectos",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        print(f"DEBUG: Token created: {access_token[:20]}...")
 
-    # Crear token de acceso
-    access_token = create_access_token(
-        data={"sub": user.email, "role": user.role.value}
-    )
+        # Convertir user a dict para la respuesta
+        user_data = {
+            "id": user.id,
+            "email": user.email,
+            "role": user.role.value,
+            "created_at": user.created_at.isoformat(),
+            "updated_at": user.updated_at.isoformat()
+        }
 
-    # Convertir user a dict para la respuesta
-    user_data = {
-        "id": user.id,
-        "email": user.email,
-        "role": user.role.value,
-        "created_at": user.created_at.isoformat(),
-        "updated_at": user.updated_at.isoformat()
-    }
-
-    return {
-        "data": {
-            "user": user_data,
-            "token": access_token
-        },
-        "error": None
-    }
+        print("DEBUG: Login successful, returning response")
+        return {
+            "data": {
+                "user": user_data,
+                "token": access_token
+            },
+            "error": None
+        }
+    except Exception as e:
+        print(f"DEBUG: Exception in login: {type(e).__name__}: {str(e)}")
+        raise
 
 @router.post("/logout")
 async def logout(current_user: User = Depends(get_current_active_user)):
