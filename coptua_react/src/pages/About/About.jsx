@@ -5,8 +5,9 @@ import Breadcrumbs from "features/dashboard/Breadcrumbs";
 import SEO from "features/landing/SEO";
 import mission from "assets/images/nosotros/nuestra_historia.png";
 import story from "assets/images/nosotros/nosotros_uno.jpeg";
-import belloImage from "assets/images/reviews/1.jpg";
-import apartadoImage from "assets/images/locations/apartado.jpeg";
+import belloSedeImage from "assets/images/nosotros/sedes/bello1.png";
+import medellinSedeImage from "assets/images/nosotros/sedes/bello2.webp";
+import apartadoSedeImage from "assets/images/nosotros/sedes/apartado.jpg";
 import { GradientText } from "components/UI";
 
 // Icons for locations
@@ -235,7 +236,7 @@ const About = () => {
             {/* Sede Bello */}
             <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 bg-white">
               <img
-                src={belloImage}
+                src={belloSedeImage}
                 alt="Sede de Bello"
                 className="w-full h-48 md:h-64 lg:h-72 object-cover transform group-hover:scale-105 transition duration-700"
               />
@@ -261,7 +262,7 @@ const About = () => {
             {/* Sede Apartadó */}
             <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 bg-white">
               <img
-                src={apartadoImage}
+                src={apartadoSedeImage}
                 alt="Sede de Apartadó"
                 className="w-full h-48 md:h-64 lg:h-72 object-cover transform group-hover:scale-105 transition duration-700"
               />
@@ -287,7 +288,7 @@ const About = () => {
             {/* Sede Medellín */}
             <div className="group relative overflow-hidden rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 bg-white">
               <img
-                src={belloImage}
+                src={medellinSedeImage}
                 alt="Sede de Medellín"
                 className="w-full h-48 md:h-64 lg:h-72 object-cover transform group-hover:scale-105 transition duration-700"
               />
