@@ -11,7 +11,6 @@ import { useModal } from "shared/hooks";
 const MapPlaceholder = ({ address, className = "" }) => {
   return (
     <div className={`bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center relative overflow-hidden ${className}`}>
-      <div className="absolute inset-0 bg-green-500 opacity-10"></div>
       <div className="text-center">
         <i className="fas fa-map-marked-alt text-green-600 text-3xl mb-2"></i>
         <p className="text-xs text-gray-600 font-medium">Mapa de Ubicación</p>
