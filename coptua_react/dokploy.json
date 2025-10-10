@@ -11,6 +11,11 @@
     "retries": 3
   },
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "REACT_APP_AUTH_API_BASE_URL": "https://todoporunalma.org/api",
+    "REACT_APP_DASHBOARD_API_BASE_URL": "https://todoporunalma.org/api",
+    "REACT_APP_API_BASE_URL": "https://todoporunalma.org/api",
+    "REACT_APP_FORMATOS_API_URL": "https://todoporunalma.org/api",
+    "REACT_APP_CORS_ORIGINS": "https://todoporunalma.org,https://www.todoporunalma.org"
   }
 }
