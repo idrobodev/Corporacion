@@ -198,7 +198,7 @@ const UsuariosComponent = () => {
         )
       }
     >
-      <section className="px-6 py-6">
+      <section className="px-4 md:px-6 py-4 md:py-6">
         <FilterBar
           filters={filterConfig}
           values={filtros}

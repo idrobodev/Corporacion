@@ -389,7 +389,7 @@ const Participantes = React.memo(() => {
                 color: 'red'
               }
             ]}
-            columns={5}
+            columns={3}
             gap="md"
           />
         </div>

@@ -339,8 +339,8 @@ const AcudientesComponent = () => {
         <div className="mt-6">
           <StatsGrid
             stats={statsData}
-            columns={isMobile ? 1 : 3}
-            gap={isMobile ? "sm" : "md"}
+            columns={3}
+            gap="md"
           />
         </div>
 
