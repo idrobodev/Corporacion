@@ -4,7 +4,7 @@ import "aos/dist/aos.css";
 import Breadcrumbs from "features/dashboard/Breadcrumbs";
 import SEO from "features/landing/SEO";
 import mission from "assets/images/general/booking.jpg";
-import story from "assets/images/banners/banner.png";
+import story from "assets/images/nosotros_uno.jpeg";
 import belloImage from "assets/images/reviews/1.jpg";
 import apartadoImage from "assets/images/locations/apartado.jpeg";
 import { GradientText } from "components/UI";
