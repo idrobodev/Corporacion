@@ -3,7 +3,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Breadcrumbs from "features/dashboard/Breadcrumbs";
 import SEO from "features/landing/SEO";
-import mission from "assets/images/general/booking.jpg";
+import mission from "assets/images/nosotros/nuestra_historia.png";
 import story from "assets/images/nosotros/nosotros_uno.jpeg";
 import belloImage from "assets/images/reviews/1.jpg";
 import apartadoImage from "assets/images/locations/apartado.jpeg";
