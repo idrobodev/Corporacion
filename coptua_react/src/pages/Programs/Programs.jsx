@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Breadcrumbs from "features/dashboard/Breadcrumbs";
-import mission from "assets/images/general/booking.jpg";
+import internado from "assets/images/programas/internado.jpg";
 import story from "assets/images/banners/banner.png";
 import happyCl from "assets/images/general/happyCl.jpg";
 import { GradientText } from "components/UI";
@@ -33,7 +33,7 @@ const Programs = () => {
       subtitle: "Transformación Integral 24/7",
       icon: "🏥",
       color: "from-blue-500 to-blue-700",
-      image: mission,
+      image: internado,
       features: [
         "Terapia intensiva individual y grupal diaria",
         "Duración personalizada: 12 - 15 meses según necesidades",
